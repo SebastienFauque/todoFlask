@@ -12,6 +12,10 @@ class TODO(db.Model):
   content = db.Column(db.String(200), nullable=False)
   date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
+  # Return a task ID with every element that is created
+  def __repr__(self):
+    return '<Task %r>' % self.id
+
 # Create an index route
 @app.route('/')
 def index():
