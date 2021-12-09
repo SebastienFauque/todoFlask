@@ -17,6 +17,8 @@ class Todo(db.Model):
   def __repr__(self):
     return '<Task %r>' % self.id
 
+
+
 # Add a route to add tasks to the website
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -50,7 +52,20 @@ def delete_task(id):
 
 @app.route('/update/<int:id>', methods=['Get', 'Post'])
 def update(id):
-  return ''
+  task = Todo.query.get_or_404(id)
+  if request.method == 'POST':
+    task.content = request.form['content']
+
+    try:
+      db.session.commit()
+      return redirect('/')
+    except:
+      return 'There was an issue updating your task'
+  else:
+    return render_template('update.html', task=task)
+
+
+
 
 if __name__ == "__main__":
   app.run(debug=True)
